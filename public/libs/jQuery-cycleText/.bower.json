@@ -1,0 +1,13 @@
+{
+  "name": "jQuery-cycleText",
+  "homepage": "https://github.com/eshengsky/jQuery-cycleText",
+  "_release": "5e7e041d48",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "5e7e041d4804f3fa1bf2875a5322fc8d35cb302c"
+  },
+  "_source": "https://github.com/eshengsky/jQuery-cycleText.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/eshengsky/jQuery-cycleText.git"
+}
