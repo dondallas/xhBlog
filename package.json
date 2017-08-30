@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "dev": "node ./bin/www",
+    "pro": "pm2 start ./bin/www.js --name xhBlog",
     "start": "node ./bin/www",
     "postinstall": "bower install"
   },
