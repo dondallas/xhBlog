@@ -7,6 +7,8 @@ var http = require('http');
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+
+console.log(`port:${port}`);
 app.set('port', port);
 
 /**
