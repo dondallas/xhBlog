@@ -8,8 +8,8 @@
 		"back_to_home": "Back To Home"
 	},
 	"Category": {
-		"all": "All Category",
-		"uncate": "Uncategorized"
+		"all": "全部",
+		"uncate": "其它"
 	},
 	"layoutAdmin": {
 		"title": "Dashboard",
