@@ -136,6 +136,27 @@
     <script type="text/javascript" src="/javascripts/highlight.pack.js" charset="utf-8"></script>
     <script type="text/javascript" src="/javascripts/index.js" charset="utf-8"></script>
     <script>
+
+        (function(){
+
+            //百度自动收录
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+
+
+            //360自动收录
+            var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?8cfc1a04115b0eda648aa7cd8a3b1e84":"https://jspassport.ssl.qhimg.com/11.0.1.js?8cfc1a04115b0eda648aa7cd8a3b1e84";
+            document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+
         var logoPath = "@config.LogoPath";
         var jiathis_config = {
             data_track_clickback: true,
