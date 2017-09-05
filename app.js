@@ -36,7 +36,17 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 // i18n init parses req for language headers, cookies, etc.
 app.use(i18n.init);
-app.use(cors());
+// app.use(cors());
+//跨域设置
+app.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With,Content-Type");
+    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By",' 3.2.1');
+    res.header('X-Frame-Options: deny');
+    if(req.method=="OPTIONS") res.send(200);/*让options请求快速返回*/
+    else  next();
+});
 
 app.use(session({
     secret: 'iblog-exp-session',
