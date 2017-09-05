@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var cors = require('cors');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -35,6 +36,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 // i18n init parses req for language headers, cookies, etc.
 app.use(i18n.init);
+app.use(cors());
 
 app.use(session({
     secret: 'iblog-exp-session',
