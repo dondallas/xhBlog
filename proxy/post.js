@@ -1,3 +1,7 @@
+var fs = require('fs');
+var path = require('path');
+var sm = require('sitemap');
+var configSitemap = require('../config').sitemap;
 var postModel = require('../models/post').PostModel;
 var redisClient = require('../utility/redisClient');
 var tool = require('../utility/tool');
@@ -313,6 +317,19 @@ exports.save = function (params, callback) {
         if (err) {
             return callback(err);
         }
+        let URLS = [
+            { url: '/',  changefreq: 'daily',  priority: 0.7 },
+            { url: '/'+entity.Alias,  changefreq: 'weekly',  priority: 0.7 },
+        ];
+        let siteMapConfig = {
+            hostname: configSitemap.hostname,
+            cacheTime: configSitemap.cacheTime,
+            urls: URLS
+        };
+        let sitemap = sm.createSitemap (siteMapConfig);
+        let filePath = path.join(__dirname, '../public', 'sitemap.xml');
+        fs.writeFileSync(filePath, sitemap.toString());
+
         if (!article) {
             //新增
             entity._id = _id;

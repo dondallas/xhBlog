@@ -4,5 +4,9 @@
     "Active": false,
     "Host": "127.0.0.1",
     "Port": 6379
+  },
+  "sitemap":{
+    "hostname":"http://www.logoxh.com",
+    "cacheTime":600000
   }
 }
