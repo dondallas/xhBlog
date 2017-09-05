@@ -1,8 +1,10 @@
 var fs = require('fs');
 var path = require('path');
 var sm = require('sitemap');
+var async = require('async');
 var configSitemap = require('../config').sitemap;
 var postModel = require('../models/post').PostModel;
+var categoryModel = require('../models/category').CategoryModel;
 var redisClient = require('../utility/redisClient');
 var tool = require('../utility/tool');
 
@@ -313,44 +315,63 @@ exports.save = function (params, callback) {
             IsActive: true,
             ModifyTime: new Date()
         });
-    postModel.findById(_id, function (err, article) {
-        if (err) {
-            return callback(err);
-        }
-        let URLS = [
-            { url: '/',  changefreq: 'daily',  priority: 0.7 },
-            { url: '/'+entity.Alias,  changefreq: 'weekly',  priority: 0.7 },
-        ];
-        let siteMapConfig = {
-            hostname: configSitemap.hostname,
-            cacheTime: configSitemap.cacheTime,
-            urls: URLS
-        };
-        let sitemap = sm.createSitemap (siteMapConfig);
-        let filePath = path.join(__dirname, '../public', 'sitemap.xml');
-        fs.writeFileSync(filePath, sitemap.toString());
 
-        if (!article) {
-            //新增
-            entity._id = _id;
-            entity.ViewCount = 0;
-            entity.CreateTime = new Date();
-            entity.save(function (err) {
+    async.parallel({
+        func1: function (done) {
+            postModel.findById(_id, function (err, article) {
                 if (err) {
-                    return callback(err);
+                    done(err);
                 }
-                return callback(null);
+                if (!article) {
+                    //新增
+                    entity._id = _id;
+                    entity.ViewCount = 0;
+                    entity.CreateTime = new Date();
+                    entity.save(function (err) {
+                        if (err) {
+                            done(err);
+                        }
+                        done(null);
+                    });
+                } else {
+                    //更新
+                    postModel.update({"_id": _id}, entity, function (err) {
+                        if (err) {
+                            done(err);
+                        }
+                        done()
+
+                    });
+                }
             });
-        } else {
-            //更新
-            postModel.update({"_id": _id}, entity, function (err) {
+
+        },
+        func2: function (done) {
+            categoryModel.findById(entity.CategoryId, function (err, category) {
                 if (err) {
-                    return callback(err);
+                    done(err);
                 }
-                return callback(null);
+                let URLS = [
+                    {url: '/', changefreq: 'daily', priority: 0.7},
+                    {url: '/blog/' + category.Alias+'/'+entity.Alias, changefreq: 'weekly', priority: 0.7},
+                ];
+                let siteMapConfig = {
+                    hostname: configSitemap.hostname,
+                    cacheTime: configSitemap.cacheTime,
+                    urls: URLS
+                };
+                let sitemap = sm.createSitemap(siteMapConfig);
+                let filePath = path.join(__dirname, '../public', 'sitemap.xml');
+                fs.writeFileSync(filePath, sitemap.toString());
+                done()
             });
+        },
+    }, function (err, results) {
+        if (err) {
+            return callback(err)
         }
-    })
+        callback()
+    });
 };
 
 /**
