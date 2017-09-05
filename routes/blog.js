@@ -234,6 +234,7 @@ router.get('/:category/:article', function (req, res, next) {
             article = results[1];
             categories = results[2];
             trueCateAlias = tool.jsonQuery(categories, {"_id": article.CategoryId}).Alias;
+
             if (cateAlias !== trueCateAlias) {
                 res.redirect(util.format('/blog/%s/%s', trueCateAlias, alias));
             }
@@ -254,12 +255,14 @@ router.get('/:category/:article', function (req, res, next) {
                 ViewCount: article.ViewCount,
                 LabelList: labelList,
                 Summary: article.Summary,
-                Content: article.Content
+                Content: article.Content,
             };
             res.render('blog/article', {
                 post: post,
                 config: settings,
-                title: settings['SiteName'] + ' - ' + article.Title
+                title: article.Title + ' - ' + settings['SiteName'],
+                keywords:post.LabelList,
+                description:post.Summary
             });
         }
     });

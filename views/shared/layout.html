@@ -3,16 +3,17 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta charset="utf-8">
+    <meta name="name" content="便利本">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="@(model.keywords ? model.keywords : 'blog,iBlog')">
-    <meta name="description" content="@(model.description ? model.description : 'iBlog')">
+    <meta name="keywords" content="@(model.keywords ? model.keywords : '便利本')">
+    <meta name="description" content="@(model.description ? model.description : '【便利本】_王晓辉的个人博客')">
     <link href="/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/stylesheets/bootstrap-addon.css" rel="stylesheet">
     <link href="/stylesheets/site.css" rel="stylesheet">
     <link href="/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/stylesheets/share.css" rel="stylesheet">
     <link href="/stylesheets/animate-custom.css" rel="stylesheet">
-    <title>便利本</title>
+    <title>@(model.title ? model.title : '便利本')</title>
 </head>
 <body class="fuelux">
 @if(model.isRoot) {
@@ -79,10 +80,31 @@
     <script>
         var _hmt = _hmt || [];
         (function () {
+
+
             var hm = document.createElement("script");
             hm.src = "//hm.baidu.com/hm.js?@config.StatisticsId";
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
+
+
+            //百度自动收录
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+
+
+            //360自动收录
+            var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?8cfc1a04115b0eda648aa7cd8a3b1e84":"https://jspassport.ssl.qhimg.com/11.0.1.js?8cfc1a04115b0eda648aa7cd8a3b1e84";
+            document.write('<script src="' + src + '" id="sozz"><\/script>');
+
         })();
     </script>
 }
