@@ -104,3 +104,7 @@ Railscasts-like style (c) Visoft, Inc. (Damien White)
 .hljs-link {
   text-decoration: underline;
 }
+
+#SOHUCS #SOHU_MAIN .module-mobile-cmt-box .mobile-cmt-box {
+  margin-top: 15vh;
+}
