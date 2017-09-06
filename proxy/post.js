@@ -317,7 +317,7 @@ exports.save = function (params, callback) {
         });
 
     async.parallel({
-        func1: function (done) {
+        post: function (done) {
             postModel.findById(_id, function (err, article) {
                 if (err) {
                     done(err);
@@ -346,25 +346,40 @@ exports.save = function (params, callback) {
             });
 
         },
-        func2: function (done) {
-            categoryModel.findById(entity.CategoryId, function (err, category) {
-                if (err) {
-                    done(err);
-                }
-                let URLS = [
-                    {url: '/', changefreq: 'daily', priority: 0.7},
-                    {url: '/blog/' + category.Alias+'/'+entity.Alias, changefreq: 'weekly', priority: 0.7},
-                ];
-                let siteMapConfig = {
-                    hostname: configSitemap.hostname,
-                    cacheTime: configSitemap.cacheTime,
-                    urls: URLS
-                };
-                let sitemap = sm.createSitemap(siteMapConfig);
-                let filePath = path.join(__dirname, '../public', 'sitemap.xml');
-                fs.writeFileSync(filePath, sitemap.toString());
-                done()
-            });
+        category: function (done) {
+            let URLS = [
+                  {url: '/', changefreq: 'daily', priority: 0.7},
+             ];
+            postModel.find({})
+                .select('CategoryId Alias')
+                .exec(function (err, data) {
+                    if (err) {
+                        done(err);
+                    }
+
+                    data.forEach(function (item) {
+
+                        categoryModel.findById(item.CategoryId, function (err, category) {
+                            if (err) {
+                                done(err);
+                            }
+                            URLS.push({
+                                url:'/blog/' + category.Alias+'/'+item.Alias,
+                                changefreq: 'weekly',
+                                priority: 0.8
+                            })
+                            let siteMapConfig = {
+                                hostname: configSitemap.hostname,
+                                cacheTime: configSitemap.cacheTime,
+                                urls: URLS
+                            };
+                            let sitemap = sm.createSitemap(siteMapConfig);
+                            let filePath = path.join(__dirname, '../public', 'sitemap.xml');
+                            fs.writeFileSync(filePath, sitemap.toString());
+                            done()
+                        });
+                    });
+                })
         },
     }, function (err, results) {
         if (err) {
