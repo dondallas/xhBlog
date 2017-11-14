@@ -4,7 +4,6 @@ var shortid = require('shortid');
 var tool = require('../utility/tool');
 var redisClient = require('../utility/redisClient');
 var i18n = require('../models/i18n')
-var moment = require('moment')
 
 //全部分类
 var cateAll = {
@@ -142,8 +141,8 @@ exports.save = function (array, callback) {
                 Alias: item.alias,
                 Img: item.img,
                 Link: item.link,
-                CreateTime: moment().format('YYYY-MM-DD HH:mm:ss'),
-                ModifyTime: moment().format('YYYY-MM-DD HH:mm:ss')
+                CreateTime: new Date(),
+                ModifyTime: new Date()
             });
         });
     }

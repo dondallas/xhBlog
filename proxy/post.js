@@ -7,7 +7,7 @@ var postModel = require('../models/post').PostModel;
 var categoryModel = require('../models/category').CategoryModel;
 var redisClient = require('../utility/redisClient');
 var tool = require('../utility/tool');
-var moment = require('moment');
+
 
 /**
  * 为首页数据查询构建条件对象
@@ -314,9 +314,9 @@ exports.save = function (params, callback) {
             Url: params.Url,
             IsDraft: params.IsDraft === 'True',
             IsActive: true,
-            ModifyTime: moment().format('YYYY-MM-DD HH:mm:ss')
+            ModifyTime: new Date()
         });
-
+x
     async.parallel({
         post: function (done) {
             postModel.findById(_id, function (err, article) {
@@ -325,10 +325,9 @@ exports.save = function (params, callback) {
                 }
                 if (!article) {
                     //新增
-                    console.warn("==========当前时间为:",moment().format('YYYY-MM-DD HH:mm:ss'))
                     entity._id = _id;
                     entity.ViewCount = 0;
-                    entity.CreateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+                    entity.CreateTime = new Date();
                     entity.save(function (err) {
                         if (err) {
                             done(err);
