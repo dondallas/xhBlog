@@ -321,7 +321,7 @@ x
         post: function (done) {
             postModel.findById(_id, function (err, article) {
                 if (err) {
-                    return done(err);
+                     done(err);
                 }
                 if (!article) {
                     //新增
@@ -330,7 +330,7 @@ x
                     entity.CreateTime = new Date();
                     entity.save(function (err) {
                         if (err) {
-                            return done(err);
+                             done(err);
                         }
                         done(null);
                     });
@@ -338,7 +338,7 @@ x
                     //更新
                     postModel.update({"_id": _id}, entity, function (err) {
                         if (err) {
-                            return done(err);
+                             done(err);
                         }
                         done()
 
@@ -355,14 +355,14 @@ x
                 .select('CategoryId Alias')
                 .exec(function (err, data) {
                     if (err) {
-                        return done(err);
+                         done(err);
                     }
 
                     data.forEach(function (item) {
 
                         categoryModel.findById(item.CategoryId, function (err, category) {
                             if (err) {
-                                return done(err);
+                                 done(err);
                             }
                             URLS.push({
                                 url:'/blog/' + category.Alias+'/'+item.Alias,
