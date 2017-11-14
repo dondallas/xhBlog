@@ -325,6 +325,7 @@ exports.save = function (params, callback) {
                 }
                 if (!article) {
                     //新增
+                    console.warn("==========当前时间为:",moment().format('YYYY-MM-DD HH:mm:ss'))
                     entity._id = _id;
                     entity.ViewCount = 0;
                     entity.CreateTime = moment().format('YYYY-MM-DD HH:mm:ss');
