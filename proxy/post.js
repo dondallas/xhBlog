@@ -7,6 +7,7 @@ var postModel = require('../models/post').PostModel;
 var categoryModel = require('../models/category').CategoryModel;
 var redisClient = require('../utility/redisClient');
 var tool = require('../utility/tool');
+var moment = require('moment');
 
 /**
  * 为首页数据查询构建条件对象
@@ -313,7 +314,7 @@ exports.save = function (params, callback) {
             Url: params.Url,
             IsDraft: params.IsDraft === 'True',
             IsActive: true,
-            ModifyTime: new Date()
+            ModifyTime: moment().format('YYYY-MM-DD HH:mm:ss')
         });
 
     async.parallel({
@@ -326,7 +327,7 @@ exports.save = function (params, callback) {
                     //新增
                     entity._id = _id;
                     entity.ViewCount = 0;
-                    entity.CreateTime = new Date();
+                    entity.CreateTime = moment().format('YYYY-MM-DD HH:mm:ss');
                     entity.save(function (err) {
                         if (err) {
                             done(err);
